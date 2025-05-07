@@ -1,0 +1,700 @@
+{
+	"info": {
+		"_postman_id": "3150b0e1-9ccc-46e2-adca-4c0c6c26b767",
+		"name": "Trello_Vasilii",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25436414"
+	},
+	"item": [
+		{
+			"name": "Boards",
+			"item": [
+				{
+					"name": "Create a Board",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var id = pm.response.json().id;\r",
+									"pm.environment.set(\"id\", id);\r",
+									"\r",
+									"/**Проверяем что статус код ответа равен 200.*/\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"/**\r",
+									" * JSON Schema\r",
+									" */\r",
+									"var expected_schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"required\": [\r",
+									"        \"id\"\r",
+									"    ],\r",
+									"    \"properties\": {\r",
+									"        \"id\": {\r",
+									"            \"type\": \"string\"\r",
+									"        }\r",
+									"    }\r",
+									"}\r",
+									"/**\r",
+									" * Проверка JSON соответствия схемы\r",
+									" */\r",
+									"pm.test('Schema is valid', function() {\r",
+									"  pm.response.to.have.jsonSchema(expected_schema);\r",
+									"});\r",
+									"\r",
+									"/**\r",
+									" * Проверяем что в ответе есть поле name c значением \"my_board\".\r",
+									" */\r",
+									"pm.test(\"Name is 'my_board'\", function () {\r",
+									"    pm.expect(pm.response.json().name).to.eql(\"my_board\");\r",
+									"});\r",
+									"\r",
+									"/**\r",
+									" * Проверяем что поле url содержит значение \"https://trello.com\".\r",
+									" */\r",
+									"pm.test(\"URL contains 'https://trello.com'\", function () {\r",
+									"    pm.expect(pm.response.json().url).to.include(\"https://trello.com\");\r",
+									"});\r",
+									"\r",
+									"/**\r",
+									" * Проверяем что объект \"prefs\" содержит массив switcherViews с полем \"viewType\" равным \"Board\"\r",
+									" */\r",
+									"pm.test(\"SwitcherViews contains 'Board'\", function () {\r",
+									"    pm.expect(pm.response.json().prefs.switcherViews[0].viewType).to.eql(\"Board\");\r",
+									"});\r",
+									"\r",
+									"//console.log(pm.response.jsonSchema(expected_schema));\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/boards/?name={{name}}&key={{APIKey}}&token={{APIToken}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"boards",
+								""
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{name}}"
+								},
+								{
+									"key": "key",
+									"value": "{{APIKey}}"
+								},
+								{
+									"key": "token",
+									"value": "{{APIToken}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a Board",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**Проверяем что статус код ответа равен 200.*/\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"/**\r",
+									" * JSON Schema\r",
+									" */\r",
+									"var expected_schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"required\": [\r",
+									"        \"id\"\r",
+									"    ],\r",
+									"    \"properties\": {\r",
+									"        \"id\": {\r",
+									"            \"type\": \"string\"\r",
+									"        }\r",
+									"    }\r",
+									"}\r",
+									"/**\r",
+									" * Проверка JSON соответствия схемы\r",
+									" */\r",
+									"pm.test('Schema is valid', function() {\r",
+									"  pm.response.to.have.jsonSchema(expected_schema);\r",
+									"});\r",
+									"\r",
+									"/**\r",
+									" * Проверяем что в ответе есть поле name c значением \"my_board\".\r",
+									" */\r",
+									"pm.test(\"Name is 'my_board'\", function () {\r",
+									"    pm.expect(pm.response.json().name).to.eql(\"my_board\");\r",
+									"});\r",
+									"\r",
+									"/**\r",
+									" * Проверяем что поле url содержит значение \"https://trello.com\".\r",
+									" */\r",
+									"pm.test(\"URL contains 'https://trello.com'\", function () {\r",
+									"    pm.expect(pm.response.json().url).to.include(\"https://trello.com\");\r",
+									"});\r",
+									"\r",
+									"/**\r",
+									" * Проверяем что объект \"prefs\" содержит массив switcherViews с полем \"viewType\" равным \"Board\"\r",
+									" */\r",
+									"pm.test(\"SwitcherViews contains 'Board'\", function () {\r",
+									"    pm.expect(pm.response.json().prefs.switcherViews[0].viewType).to.eql(\"Board\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/boards/{{id}}?key={{APIKey}}&token={{APIToken}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"boards",
+								"{{id}}"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{APIKey}}"
+								},
+								{
+									"key": "token",
+									"value": "{{APIToken}}"
+								},
+								{
+									"key": "fields",
+									"value": "id,name,idOrganization,url,closed",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a Board",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**Проверяем что статус код ответа равен 200.*/\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"/**\r",
+									" * JSON Schema\r",
+									" */\r",
+									"var expected_schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"required\": [\r",
+									"        \"id\"\r",
+									"    ],\r",
+									"    \"properties\": {\r",
+									"        \"id\": {\r",
+									"            \"type\": \"string\"\r",
+									"        }\r",
+									"    }\r",
+									"}\r",
+									"/**\r",
+									" * Проверка JSON соответствия схемы\r",
+									" */\r",
+									"pm.test('Schema is valid', function() {\r",
+									"  pm.response.to.have.jsonSchema(expected_schema);\r",
+									"});\r",
+									"/**\r",
+									" * Проверяем что в ответе есть поле name c значением \"my_board\".\r",
+									" */\r",
+									"pm.test(\"Name is 'my_board'\", function () {\r",
+									"    pm.expect(pm.response.json().name).to.eql(\"в работе\");\r",
+									"});\r",
+									"/**\r",
+									" * Проверяем что в ответе есть поле desc с значением \"Hello world\"\r",
+									" */\r",
+									"pm.test(\"'Desc' is 'Hello world!'\", function () {\r",
+									"    pm.expect(pm.response.json().desc).to.eql(\"Hello world!\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"name\", \"в работе\");"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/boards/{{id}}?name={{name}}&key={{APIKey}}&token={{APIToken}}&desc={{desc}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"boards",
+								"{{id}}"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{name}}"
+								},
+								{
+									"key": "key",
+									"value": "{{APIKey}}"
+								},
+								{
+									"key": "token",
+									"value": "{{APIToken}}"
+								},
+								{
+									"key": "desc",
+									"value": "{{desc}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a Board",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**Проверяем что статус код ответа равен 200.*/\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"/**\r",
+									" * JSON Schema\r",
+									" */\r",
+									"var expected_schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"required\": [\r",
+									"        \"_value\"\r",
+									"    ],\r",
+									"    \"properties\": {\r",
+									"        \"_value\": {\r",
+									"            \"type\": \"null\"\r",
+									"        }\r",
+									"    }\r",
+									"}\r",
+									"/**\r",
+									" * Проверка JSON соответствия схемы\r",
+									" */\r",
+									"pm.test('Schema is valid', function() {\r",
+									"  pm.response.to.have.jsonSchema(expected_schema);\r",
+									"});\r",
+									"\r",
+									"/**\r",
+									" * Проверяем что поле содержит null\r",
+									" */\r",
+									"pm.test(\"_value is null\", function() {\r",
+									"  pm.expect(pm.response.json()._value).to.be.null;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/boards/{{id}}?key={{APIKey}}&token={{APIToken}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"boards",
+								"{{id}}"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{APIKey}}"
+								},
+								{
+									"key": "token",
+									"value": "{{APIToken}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a Board Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**Проверяем что статус код ответа равен 404.*/\r",
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"/**\r",
+									" * Проверяем что в ответе пришел text/plain\r",
+									" */\r",
+									"pm.test(\"Response is text\", function() {\r",
+									"    pm.response.to.have.header('Content-Type', 'text/plain; charset=utf-8');\r",
+									"});\r",
+									"\r",
+									"pm.environment.set(\"name\", \"my_board\");\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/boards/{{id}}?key={{APIKey}}&token={{APIToken}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"boards",
+								"{{id}}"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{APIKey}}"
+								},
+								{
+									"key": "token",
+									"value": "{{APIToken}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Members",
+			"item": [
+				{
+					"name": "Create a Board",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var id = pm.response.json().id;\r",
+									"pm.environment.set(\"id\", id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/boards/?name={{name}}&key={{APIKey}}&token={{APIToken}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"boards",
+								""
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "{{name}}"
+								},
+								{
+									"key": "key",
+									"value": "{{APIKey}}"
+								},
+								{
+									"key": "token",
+									"value": "{{APIToken}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get A Member",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**Проверяем что статус код ответа равен 200.*/\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"/**\r",
+									" * JSON Schema\r",
+									" */\r",
+									"var expected_schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"required\": [\r",
+									"        \"id\"\r",
+									"    ],\r",
+									"    \"properties\": {\r",
+									"        \"id\": {\r",
+									"            \"type\": \"string\"\r",
+									"        }\r",
+									"    }\r",
+									"}\r",
+									"/**\r",
+									" * Проверка JSON соответствия схемы\r",
+									" */\r",
+									"pm.test('Schema is valid', function() {\r",
+									"  pm.response.to.have.jsonSchema(expected_schema);\r",
+									"});\r",
+									"\r",
+									"/**\r",
+									" * Проверяем в ответе есть поле 'username' с значением 'eto_ya1'\r",
+									" */\r",
+									"pm.test(\"Username is 'eto_ya1'\", function() {\r",
+									"  pm.expect(pm.response.json().username).to.eql(pm.environment.get(\"username\"));\r",
+									"});\r",
+									"/**\r",
+									" * Проверяем ответ содержит 'novopashinva@gmail.com'\r",
+									" */\r",
+									"pm.test(\"Body contains valid email\", function() {\r",
+									"    pm.expect(pm.response.text()).to.include(\"novopashinva@gmail.com\");\r",
+									"});\r",
+									"/**\r",
+									" * Получаю Id своей доски, и использую его в Get Boards that Member belongs to\r",
+									" */\r",
+									"var my_boards = pm.response.json().idBoards[0];\r",
+									"pm.environment.set(\"my_boards\", my_boards);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/members/{{username}}?key={{APIKey}}&token={{APIToken}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"members",
+								"{{username}}"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{APIKey}}"
+								},
+								{
+									"key": "token",
+									"value": "{{APIToken}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Boards that Member belongs to",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"/**Проверяем что статус код ответа равен 200.*/\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"/**\r",
+									" * JSON Schema\r",
+									" */\r",
+									"var expected_schema = {\r",
+									"    \"type\": \"array\",\r",
+									"    \"required\": [\r",
+									"        \"name\"\r",
+									"    ],\r",
+									"    \"properties\": {\r",
+									"        \"name\": {\r",
+									"            \"type\": \"string\"\r",
+									"        }\r",
+									"    }\r",
+									"}\r",
+									"/**\r",
+									" * Проверка JSON соответствия схемы\r",
+									" */\r",
+									"pm.test('Schema is valid', function() {\r",
+									"  pm.response.to.have.jsonSchema(expected_schema);\r",
+									"});\r",
+									"/**\r",
+									" * Проверяем id принадлежащей нам доски \r",
+									" */\r",
+									"pm.test(\"Id is valid\", function(){\r",
+									"    pm.expect(pm.response.json()[0].id).to.eql(\r",
+									"        pm.environment.get(\"my_boards\"));\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/members/{{username}}/boards?key={{APIKey}}&token={{APIToken}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"members",
+								"{{username}}",
+								"boards"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{APIKey}}"
+								},
+								{
+									"key": "token",
+									"value": "{{APIToken}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a Board",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/boards/{{id}}?key={{APIKey}}&token={{APIToken}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"boards",
+								"{{id}}"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{APIKey}}"
+								},
+								{
+									"key": "token",
+									"value": "{{APIToken}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
