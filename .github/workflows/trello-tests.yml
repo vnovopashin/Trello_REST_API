@@ -21,6 +21,6 @@ jobs:
     - name: Run test
       run: |
         newman run Trello_Vasilii/Trello_Vasilii.postman_collection.json \
-        -e Trello_Prod.postman_environment.json \
+        -e Trello_Vasilii/Trello_Prod.postman_environment.json \
         --env-var "APIKey=${{ secrets.APIKEY }}" \
         --env-var "APIToken=${{ secrets.APITOKEN }}" 
