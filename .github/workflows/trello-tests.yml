@@ -15,12 +15,23 @@ jobs:
       with:
         node-versions: '20'
 
-    - name: Install Newman
-      run: npm install -g newman
+    - name: Install Newman and HTML reporter
+      run: |
+        npm install -g newman
+        npm install -g newman-reporter-htmlextra  
     
-    - name: Run test
+    - name: Run tests
       run: |
         newman run Trello_Vasilii/Trello_Vasilii.postman_collection.json \
         -e Trello_Vasilii/Trello_Prod.postman_environment.json \
         --env-var "APIKey=${{ secrets.APIKEY }}" \
-        --env-var "APIToken=${{ secrets.APITOKEN }}" 
+        --env-var "APIToken=${{ secrets.APITOKEN }}" \
+        --reporters htmlextra \
+        --reporter-htmlextra-export newman-report.html
+
+    - name: Upload HTML report
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: trello-html-report
+        path: newman-report.html    
