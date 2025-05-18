@@ -39,18 +39,20 @@ jobs:
       with:
         name: trello-html-report
         path: newman-report.html
+    
+    - name: Generate timestamp
+      id: timestamp
+      run: echo "date=$(date +'%d.%m.%Y_%H:%M:%S')" >> $GITHUB_OUTPUT    
         
     - name: Send html report
       uses: dawidd6/action-send-mail@v5
-      env:
-        CURRENT_DATE: $(date +'%d-%m-%Y_%H:%M:%S')
       with: 
         server_address: smtp.gmail.com
         username: ${{secrets.MAIL_LOGIN}}
         password: ${{secrets.MAIL_PASS}}
         server_port: 465
-        subject: Github Actions job result
+        subject: Github Actions job result (${{ steps.timestamp.outputs.date }})
         to: ${{secrets.MAIL_LOGIN}}
-        from: GitHub Actions - ${{ env.CURRENT_DATE }}
+        from: GitHub Actions
         body: Please find report attached
         attachments: newman-report.html
