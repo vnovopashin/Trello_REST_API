@@ -46,6 +46,7 @@ jobs:
         
     - name: Send html report
       uses: dawidd6/action-send-mail@v5
+      if: always()
       with: 
         server_address: smtp.gmail.com
         username: ${{secrets.MAIL_LOGIN}}
@@ -54,5 +55,11 @@ jobs:
         subject: Github Actions job result (${{ steps.timestamp.outputs.date }})
         to: ${{secrets.MAIL_LOGIN}}
         from: GitHub Actions
-        body: Please find report attached
+        body: |
+          Execution Status: ${{ job.status == 'success' && '✅ УСПЕШНО' || '❌ ПРОВАЛ' }}
+          Details:
+            - Workflow: ${{ github.workflow }}
+            - Запуск: ${{ github.run_id }}
+            - Ссылка: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          Please find report attached
         attachments: newman-report.html
