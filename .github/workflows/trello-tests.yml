@@ -1,6 +1,10 @@
 name: Trello API tests
 
-on: workflow_dispatch
+on: 
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron:  '45 11 * * 1-5'
+  workflow_dispatch:
   
 jobs:
   run_tests:
@@ -34,4 +38,28 @@ jobs:
       if: always()
       with:
         name: trello-html-report
-        path: newman-report.html    
+        path: newman-report.html
+    
+    - name: Generate timestamp
+      id: timestamp
+      run: echo "date=$(date +'%d.%m.%Y_%H:%M:%S')" >> $GITHUB_OUTPUT    
+        
+    - name: Send html report
+      uses: dawidd6/action-send-mail@v5
+      if: always()
+      with: 
+        server_address: smtp.gmail.com
+        username: ${{secrets.MAIL_LOGIN}}
+        password: ${{secrets.MAIL_PASS}}
+        server_port: 465
+        subject: Github Actions job result (${{ steps.timestamp.outputs.date }})
+        to: ${{secrets.MAIL_LOGIN}}
+        from: GitHub Actions
+        body: |
+          Execution Status: ${{ job.status == 'success' && '✅ УСПЕШНО' || '❌ ПРОВАЛ' }}
+          Details:
+            - Workflow: ${{ github.workflow }}
+            - Запуск: ${{ github.run_id }}
+            - Ссылка: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          Please find report attached
+        attachments: newman-report.html
